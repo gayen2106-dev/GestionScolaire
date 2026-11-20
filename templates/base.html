@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}School Manager{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'students/style.css' %}">
+</head>
+<body>
+    <a class="skip-link" href="#contenu">Aller au contenu</a>
+
+    <header class="site-header">
+        <div class="container header-inner">
+            <a class="brand" href="{% url 'pages:home' %}">
+                <span class="brand-mark" aria-hidden="true">SM</span>
+                <span class="brand-name">School Manager</span>
+            </a>
+            <nav class="main-nav" aria-label="Navigation principale">
+                {% url 'pages:home' as home_url %}
+                {% url 'students:list' as students_url %}
+                {% url 'teachers:list' as teachers_url %}
+                {% url 'pages:about' as about_url %}
+
+                <a href="{{ home_url }}"
+                   {% if request.path == home_url %}class="active" aria-current="page"{% endif %}>Accueil</a>
+                <a href="{{ students_url }}"
+                   {% if request.resolver_match.namespace == 'students' %}class="active" aria-current="page"{% endif %}>Étudiants</a>
+                <a href="{{ teachers_url }}"
+                   {% if request.resolver_match.namespace == 'teachers' %}class="active" aria-current="page"{% endif %}>Enseignants</a>
+                <a href="{{ about_url }}"
+                   {% if request.path == about_url %}class="active" aria-current="page"{% endif %}>À propos</a>
+                <a href="{% url 'admin:index' %}" class="nav-admin">Administration</a>
+            </nav>
+        </div>
+    </header>
+
+    <main id="contenu" class="container">
+        {% if messages %}
+            <div class="messages" role="status">
+                {% for message in messages %}
+                    <p class="message {{ message.tags }}">{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            School Manager · Projet de formation Django · ISEP-AT Diamniadio
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Accueil · School Manager{% endblock %}
+
+{% block content %}
+    <section class="hero">
+        <p class="eyebrow">Tableau de bord</p>
+        <h1>Bienvenue dans School Manager</h1>
+        <p class="lead">Établissement : <strong>{{ school_name }}</strong></p>
+        <div class="actions">
+            <a class="btn" href="{% url 'students:create' %}">+ Inscrire un étudiant</a>
+            <a class="btn btn-secondary" href="{% url 'students:list' %}">Voir la liste des étudiants</a>
+        </div>
+    </section>
+
+    <section class="stats" aria-label="Chiffres clés">
+        <article class="stat-card">
+            <span class="stat-number">{{ nb_students }}</span>
+            <span class="stat-label">étudiant{{ nb_students|pluralize }}</span>
+        </article>
+        <article class="stat-card">
+            <span class="stat-number">{{ nb_active }}</span>
+            <span class="stat-label">actif{{ nb_active|pluralize }}</span>
+        </article>
+        <article class="stat-card">
+            <span class="stat-number">{{ nb_teachers }}</span>
+            <span class="stat-label">enseignant{{ nb_teachers|pluralize }}</span>
+        </article>
+    </section>
+{% endblock %}

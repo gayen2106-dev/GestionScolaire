@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Étudiants · School Manager{% endblock %}
+
+{% block content %}
+    <div class="page-head">
+        <div>
+            <h1>Liste des étudiants</h1>
+            <p class="muted">{{ students|length }} étudiant{{ students|length|pluralize }}{% if query %} pour « {{ query }} »{% endif %}</p>
+        </div>
+        <a class="btn" href="{% url 'students:create' %}">+ Inscrire un étudiant</a>
+    </div>
+
+    <form method="get" class="search-form" role="search">
+        <input type="search" name="q" value="{{ query }}" placeholder="Nom ou prénom" aria-label="Rechercher un étudiant">
+        <button type="submit">Rechercher</button>
+        {% if query %}<a class="link-reset" href="{% url 'students:list' %}">Effacer</a>{% endif %}
+    </form>
+
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>N°</th><th>Prénom</th><th>Nom</th><th>Classe</th><th>Statut</th><th class="col-actions">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                    <tr>
+                        <td>{{ student.id }}</td>
+                        <td><a href="{% url 'students:detail' student.id %}">{{ student.first_name }}</a></td>
+                        <td>{{ student.last_name|upper }}</td>
+                        <td><a class="tag" href="{% url 'students:by_class' student.classe %}">{{ student.classe }}</a></td>
+                        <td>
+                            {% if student.active %}<span class="badge badge-ok">Actif</span>{% else %}<span class="badge badge-off">Inactif</span>{% endif %}
+                        </td>
+                        <td class="col-actions">
+                            <a href="{% url 'students:update' student.id %}">Modifier</a>
+                            <a class="danger-link" href="{% url 'students:delete' student.id %}">Supprimer</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr><td colspan="6" class="empty">Aucun étudiant inscrit.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

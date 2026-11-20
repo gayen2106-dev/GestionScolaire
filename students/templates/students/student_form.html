@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} · School Manager{% endblock %}
+
+{% block content %}
+    <h1>{{ title }}</h1>
+
+    <form method="post" class="card form-card">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        {% for field in form %}
+            <div class="field{% if field.errors %} has-error{% endif %}">
+                {{ field.label_tag }}
+                {{ field }}
+                {% if field.help_text %}<small class="help">{{ field.help_text }}</small>{% endif %}
+                {{ field.errors }}
+            </div>
+        {% endfor %}
+
+        <div class="form-actions">
+            <button type="submit">Enregistrer</button>
+            {% if student %}
+                <a class="btn btn-secondary" href="{% url 'students:detail' student.id %}">Annuler</a>
+            {% else %}
+                <a class="btn btn-secondary" href="{% url 'students:list' %}">Annuler</a>
+            {% endif %}
+        </div>
+    </form>
+{% endblock %}

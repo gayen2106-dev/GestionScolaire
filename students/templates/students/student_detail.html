@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}{{ student.first_name }} {{ student.last_name }}{% endblock %}
+
+{% block content %}
+    <a class="back-link" href="{% url 'students:list' %}">← Retour à la liste</a>
+
+    <article class="card detail">
+        <header class="detail-head">
+            <div class="avatar" aria-hidden="true">{{ student.first_name|slice:":1" }}{{ student.last_name|slice:":1" }}</div>
+            <div>
+                <h1>{{ student.first_name }} {{ student.last_name|upper }}</h1>
+                {% if student.active %}<span class="badge badge-ok">Actif</span>{% else %}<span class="badge badge-off">Inactif</span>{% endif %}
+            </div>
+        </header>
+
+        <dl class="detail-list">
+            <div><dt>Numéro</dt><dd>{{ student.id }}</dd></div>
+            <div><dt>Classe</dt><dd><a href="{% url 'students:by_class' student.classe %}">{{ student.classe }}</a></dd></div>
+            <div><dt>Email</dt><dd>{{ student.email }}</dd></div>
+            <div><dt>Téléphone</dt><dd>{{ student.phone|default:"Non renseigné" }}</dd></div>
+            <div><dt>Date de naissance</dt><dd>{{ student.birth_date|date:"d/m/Y"|default:"Non renseignée" }}</dd></div>
+            <div><dt>Inscrit le</dt><dd>{{ student.created_at|date:"d/m/Y" }}</dd></div>
+        </dl>
+
+        <p class="actions">
+            <a class="btn" href="{% url 'students:update' student.id %}">Modifier</a>
+            <a class="btn btn-outline-danger" href="{% url 'students:delete' student.id %}">Supprimer</a>
+        </p>
+    </article>
+{% endblock %}
